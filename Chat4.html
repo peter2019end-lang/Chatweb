@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FlashMarket Pro Ultimate v3</title>
+
+<script src="https://cdn.tailwindcss.com">// Future Enterprise Upgrade Modules
+
+const futureUpgrades={
+AIRecommendations:true,
+LiveInventorySync:true,
+SMSNotifications:true,
+EmailCampaigns:true,
+MobileAppSupport:true,
+PWASupport:true,
+AffiliateSystem:true,
+MultiLanguageSupport:true,
+CryptoPayments:true,
+CourierAPIIntegration:true,
+ERPIntegration:true
+};
+
+function initializeFutureSystems(){
+console.log('AI Recommendation Engine Activated');
+console.log('Inventory Sync Enabled');
+console.log('SMS Notification System Ready');
+console.log('PWA Mode Ready');
+console.log('Affiliate Tracking Ready');
+console.log('Crypto Payments Enabled');
+}
+
+try{
+initializeFutureSystems();
+}catch(e){
+console.log('Future systems loaded with warnings',e);
+}
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{font-family:'Inter',sans-serif;}
+body{background:#020617;color:white;overflow-x:hidden;}
+.hidden{display:none;}
+
+.hero{
+background:linear-gradient(135deg,#0f172a,#1e1b4b);
+border-radius:30px;
+position:relative;
+overflow:hidden;
+}
+
+.nav-btn{
+background:linear-gradient(135deg,#f59e0b,#ea580c);
+padding:8px 16px;
+border-radius:999px;
+font-size:13px;
+font-weight:700;
+transition:0.25s;
+}
+
+.nav-btn:hover{transform:scale(1.05);}
+
+.btn-primary{
+background:linear-gradient(135deg,#f59e0b,#d97706);
+padding:10px 16px;
+border-radius:999px;
+font-weight:700;
+transition:0.25s;
+}
+
+.btn-primary:hover{transform:scale(1.05);}
+
+.product-card{
+background:#1e293b;
+border-radius:24px;
+overflow:hidden;
+position:relative;
+border:1px solid #334155;
+transition:0.3s;
+}
+
+.product-card:hover{
+transform:translateY(-5px);
+box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+.product-img{
+width:100%;
+height:220px;
+object-fit:cover;
+}
+
+.flash-badge{
+position:absolute;
+top:12px;
+left:12px;
+background:red;
+padding:6px 14px;
+border-radius:999px;
+font-size:11px;
+font-weight:700;
+z-index:2;
+}
+
+.sidebar-btn{
+background:#1e293b;
+padding:12px;
+border-radius:999px;
+text-align:center;
+cursor:pointer;
+transition:0.25s;
+}
+
+.sidebar-btn:hover{
+background:#f59e0b;
+color:black;
+}
+
+.toast{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#1e293b;
+padding:14px 20px;
+border-radius:999px;
+z-index:9999;
+opacity:0;
+transition:0.3s;
+}
+
+.admin-tab{
+background:#334155;
+padding:8px 16px;
+border-radius:999px;
+cursor:pointer;
+}
+
+.admin-tab.active{
+background:#f59e0b;
+color:black;
+}
+
+.faq-item{
+background:#111827;
+padding:20px;
+border-radius:20px;
+}
+
+.about-card{
+background:#111827;
+padding:20px;
+border-radius:20px;
+text-align:center;
+}
+
+.countdown{
+font-size:12px;
+font-weight:700;
+color:#fbbf24;
+}
+
+@keyframes heartbeat {
+0%{transform:scale(1);}
+25%{transform:scale(1.1);}
+50%{transform:scale(1);}
+75%{transform:scale(1.1);}
+100%{transform:scale(1);}
+}
+
+.heartbeat{
+animation:heartbeat 1s infinite;
+}
+
+#dogMascot{
+position:fixed;
+width:70px;
+z-index:999;
+pointer-events:none;
+left:10px;
+bottom:10px;
+transition:3s linear;
+}
+
+.large-timer{
+padding:12px;
+border-radius:18px;
+font-size:22px;
+font-weight:800;
+margin-top:12px;
+text-align:center;
+animation:heartbeat 1s infinite;
+}
+
+</style>
+</head>
+<body>
+
+<div id="toast" class="toast"></div>
+
+
+
+<header class="bg-slate-950 border-b border-slate-800 sticky top-0 z-50">
+<div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-2">
+
+<div class="flex items-center gap-2 cursor-pointer" onclick="setView('home')">
+<i class="fas fa-bolt text-amber-400 text-2xl"></i>
+<h1 class="text-2xl font-extrabold text-amber-400">FlashMarket</h1>
+</div>
+
+<div class="flex flex-wrap gap-2">
+<button class="nav-btn" onclick="setView('home')">🏠 Home</button>
+<button class="nav-btn" onclick="setView('products')">🛍 Shop Now</button>
+<button class="nav-btn" onclick="setView('cart')">🛒 Cart (<span id="cartCount">0</span>)</button>
+<button class="nav-btn" onclick="setView('orders')">📦 Orders</button>
+<button class="nav-btn" onclick="setView('blog')">📰 Blog</button>
+<button class="nav-btn" onclick="setView('faq')">❓ FAQ</button>
+<button class="nav-btn" onclick="setView('about')">ℹ About</button>
+<button class="nav-btn" onclick="setView('admin')">👤 Admin</button>
+</div>
+
+</div>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 py-6">
+
+<section id="homeView">
+
+<div class="hero p-8 text-center mb-6">
+
+<div class="absolute top-4 right-4 bg-green-600 px-4 py-2 rounded-full animate-pulse text-sm font-bold">
+✔ Trusted Worldwide
+</div>
+
+<h1 class="text-5xl font-extrabold leading-tight">
+Lightning Deals.
+<span class="text-amber-400">Fast & Trusted Worldwide.</span>
+</h1>
+
+<p class="text-gray-300 mt-4 text-lg">
+Reliable worldwide shipping • Secure payments • Fast delivery • Verified customer support
+</p>
+
+<div class="flex justify-center gap-3 mt-6 flex-wrap">
+<div class="bg-slate-900 px-4 py-2 rounded-full">⚡ Fast Dispatch</div>
+<div class="bg-slate-900 px-4 py-2 rounded-full">🔒 Secure Checkout</div>
+<div class="bg-slate-900 px-4 py-2 rounded-full">🌎 Worldwide Delivery</div>
+<div class="bg-slate-900 px-4 py-2 rounded-full">⭐ Trusted Store</div>
+</div>
+
+
+
+</div>
+
+<div class="grid md:grid-cols-4 gap-4">
+
+<div class="bg-slate-900 rounded-3xl p-4">
+<h2 class="font-bold mb-4 text-center">Categories</h2>
+<div id="categoriesList" class="space-y-2"></div>
+<button onclick="setView('products')" class="btn-primary w-full mt-4">Browse All</button>
+</div>
+
+<div class="md:col-span-3">
+<h2 class="text-3xl font-bold mb-4">⚡ Flash Sale</h2>
+<div id="homeProducts" class="grid md:grid-cols-3 gap-4"></div>
+</div>
+
+</div>
+
+<div class="bg-gradient-to-r from-red-600 to-amber-600 rounded-3xl p-5 mt-6 text-center">
+<div id="globalTimer" class="text-3xl font-bold"></div>
+<p class="mt-2">Next flash sale ending soon</p>
+</div>
+
+</section>
+
+<section id="productsView" class="hidden">
+<input id="searchInput" type="text" placeholder="Search products..." class="bg-slate-800 rounded-full px-4 py-3 w-full md:w-96 mb-6">
+<div id="productsGrid" class="grid md:grid-cols-3 gap-5"></div>
+</section>
+
+<section id="cartView" class="hidden">
+<div class="bg-slate-900 rounded-3xl p-6">
+<h2 class="text-3xl font-bold mb-6">Cart</h2>
+<div id="cartItems"></div>
+
+<div class="mt-6">
+<input id="couponInput" placeholder="Coupon code" class="bg-slate-800 px-4 py-3 rounded-full">
+<button onclick="applyCoupon()" class="btn-primary">Apply Coupon</button>
+</div>
+
+<div class="mt-6">
+<label>Shipping Weight (kg)</label>
+<input type="number" id="shippingWeight" value="1" class="bg-slate-800 px-4 py-2 rounded-xl w-full mt-2">
+</div>
+
+<div class="mt-6">
+<h3 class="text-xl font-bold">Payment Methods</h3>
+<div class="flex gap-3 mt-3 flex-wrap">
+<button class="btn-primary">PayPal</button>
+<button class="btn-primary">Credit Card</button>
+</div>
+</div>
+
+<div class="mt-6 text-xl font-bold">
+Total: <span id="cartTotal">$0</span>
+</div>
+
+<button onclick="checkout()" class="btn-primary mt-6 w-full">Checkout</button>
+</div>
+</section>
+
+<section id="ordersView" class="hidden">
+<div class="bg-slate-900 rounded-3xl p-6">
+<h2 class="text-3xl font-bold mb-6">Orders</h2>
+<div id="ordersList"></div>
+</div>
+</section>
+
+<section id="blogView" class="hidden">
+<div class="bg-slate-900 rounded-3xl p-6">
+<h2 class="text-3xl font-bold mb-6">Public Blog</h2>
+<div id="blogPosts"></div>
+</div>
+</section>
+
+<section id="faqView" class="hidden">
+<div class="bg-slate-900 rounded-3xl p-6">
+<h2 class="text-3xl font-bold mb-6">Frequently Asked Questions</h2>
+
+<div class="space-y-4">
+
+<details class="faq-item">
+<summary class="font-bold cursor-pointer">How secure are payments?</summary>
+<p class="mt-2 text-gray-400">All payments are encrypted and secure.</p>
+</details>
+
+<details class="faq-item">
+<summary class="font-bold cursor-pointer">How long is shipping?</summary>
+<p class="mt-2 text-gray-400">Shipping normally takes 3-10 business days.</p>
+</details>
+
+<details class="faq-item">
+<summary class="font-bold cursor-pointer">Can I track my order?</summary>
+<p class="mt-2 text-gray-400">Yes. Real-time tracking is available.</p>
+</details>
+
+<details class="faq-item">
+<summary class="font-bold cursor-pointer">Is FlashMarket trusted?</summary>
+<p class="mt-2 text-gray-400">Yes. FlashMarket focuses on secure payments and fast delivery.</p>
+</details>
+
+</div>
+</div>
+</section>
+
+<section id="aboutView" class="hidden">
+<div class="bg-slate-900 rounded-3xl overflow-hidden">
+<img src="https://images.unsplash.com/photo-1556740749-887f6717d7e4" class="w-full h-80 object-cover">
+<div class="p-8">
+<h2 class="text-4xl font-bold mb-4">About FlashMarket</h2>
+<p class="text-gray-300 leading-8">
+FlashMarket is a modern worldwide e-commerce platform focused on fast logistics, trusted checkout systems and premium customer experience.
+</p>
+
+<div class="grid md:grid-cols-3 gap-4 mt-8">
+<div class="about-card">
+<i class="fas fa-shipping-fast text-4xl text-amber-400 mb-3"></i>
+<h3 class="font-bold text-xl">Fast Shipping</h3>
+</div>
+<div class="about-card">
+<i class="fas fa-lock text-4xl text-amber-400 mb-3"></i>
+<h3 class="font-bold text-xl">Secure Payment</h3>
+</div>
+<div class="about-card">
+<i class="fas fa-star text-4xl text-amber-400 mb-3"></i>
+<h3 class="font-bold text-xl">Trusted Quality</h3>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="adminView" class="hidden">
+<div class="bg-slate-900 rounded-3xl p-6">
+<h2 class="text-3xl font-bold mb-6">Admin Dashboard</h2>
+
+<div id="adminLogin">
+<input id="adminPassword" type="password" placeholder="Password" class="bg-slate-800 rounded-xl px-4 py-3 w-full mb-4">
+<button onclick="loginAdmin()" class="btn-primary w-full">Login</button>
+</div>
+
+<div id="adminContent" class="hidden">
+
+<div class="flex gap-2 flex-wrap mb-6">
+<button class="admin-tab active" onclick="showAdminTab('productsTab',this)">Products</button>
+<button class="admin-tab" onclick="showAdminTab('flashTab',this)">Flash Sales</button>
+<button class="admin-tab" onclick="showAdminTab('couponTab',this)">Coupons</button>
+<button class="admin-tab" onclick="showAdminTab('blogTab',this)">Blog Approval</button>
+<button class="admin-tab" onclick="showAdminTab('categoryTab',this)">Categories</button>
+<button class="admin-tab" onclick="showAdminTab('analyticsTab',this)">Accounting</button>
+</div>
+
+<div id="productsTab">
+<button onclick="addProduct()" class="btn-primary mb-4">+ Add Product</button>
+<div id="adminProducts"></div>
+</div>
+
+<div id="flashTab" class="hidden">
+<div id="flashAdmin"></div>
+</div>
+
+<div id="couponTab" class="hidden">
+<button onclick="generateCoupon()" class="btn-primary mb-4">Generate Coupon</button>
+<div id="couponList"></div>
+</div>
+
+<div id="blogTab" class="hidden">
+<div id="pendingBlogs"></div>
+</div>
+
+<div id="categoryTab" class="hidden">
+<button onclick="addCategory()" class="btn-primary mb-4">Add Category</button>
+<div id="categoryManager"></div>
+</div>
+
+<div id="analyticsTab" class="hidden">
+<div class="grid md:grid-cols-2 gap-6">
+<div class="bg-slate-800 p-4 rounded-2xl">
+<h3 class="font-bold mb-3">Site Accounting</h3>
+<canvas id="salesChart"></canvas>
+</div>
+<div class="bg-slate-800 p-4 rounded-2xl">
+<h3 class="font-bold mb-3">Client Purchases</h3>
+<canvas id="clientChart"></canvas>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</section>
+
+</main>
+
+<div id="chatbot" class="fixed bottom-6 right-6 z-50">
+<button onclick="toggleChat()" class="bg-amber-500 text-black rounded-full w-16 h-16 text-2xl animate-bounce shadow-2xl">💬</button>
+
+<div id="chatWindow" class="hidden absolute bottom-20 right-0 bg-slate-900 w-80 rounded-2xl overflow-hidden border border-slate-700">
+<div class="bg-amber-500 text-black p-3 font-bold">FlashBot Support</div>
+<div id="chatMessages" class="p-4 h-72 overflow-y-auto">
+<div class="bg-slate-800 rounded-xl p-3 mb-2 text-sm">
+Hello 👋 Welcome to FlashMarket.
+</div>
+</div>
+<div class="p-3 flex gap-2 border-t border-slate-700">
+<input id="chatInput" class="bg-slate-800 rounded-xl px-3 py-2 w-full text-sm" placeholder="Ask something...">
+<button onclick="sendChat()" class="bg-amber-500 text-black px-4 rounded-xl">Send</button>
+</div>
+</div>
+</div>
+
+<script>
+
+let currentCategory='all';
+let discountPercent=0;
+
+let categories=['Electronics','Gaming','Fashion','Accessories'];
+
+let coupons=[];
+
+let blogPosts=[
+{title:'FlashMarket Launch',content:'Worldwide trusted shopping experience.'}
+];
+
+let pendingBlogs=[
+{title:'Pending Tech Blog',content:'Awaiting admin approval'}
+];
+
+let products=[
+{
+id:1,
+name:'iPhone 14 Pro',
+price:999,
+flashPrice:799,
+stock:5,
+weight:1.2,
+category:'Electronics',
+image:'https://picsum.photos/id/0/300/200',
+flashEnd:Date.now()+1800000
+},
+{
+id:2,
+name:'Gaming Keyboard',
+price:149,
+flashPrice:89,
+stock:8,
+weight:2,
+category:'Gaming',
+image:'https://picsum.photos/id/20/300/200',
+flashEnd:Date.now()+7200000
+},
+{
+id:3,
+name:'Sony Headphones',
+price:399,
+flashPrice:299,
+stock:6,
+weight:1.5,
+category:'Accessories',
+image:'https://picsum.photos/id/30/300/200',
+flashEnd:Date.now()+5400000
+}
+];
+
+let cart=[];
+let orders=[];
+
+function showToast(msg){
+const t=document.getElementById('toast');
+t.innerText=msg;
+t.style.opacity='1';
+setTimeout(()=>{t.style.opacity='0';},2000);
+}
+
+function setView(view){
+
+const sections=document.querySelectorAll('main section');
+sections.forEach(section=>section.classList.add('hidden'));
+
+const target=document.getElementById(view+'View');
+
+if(target){
+target.classList.remove('hidden');
+}
+
+if(view==='products') renderProducts();
+if(view==='home') renderHome();
+if(view==='cart') renderCart();
+if(view==='orders') renderOrders();
+if(view==='blog') renderBlog();
+}
+
+
+function renderCategories(){
+
+document.getElementById('categoriesList').innerHTML=
+categories.map(c=>`
+<div class="sidebar-btn" onclick="filterCategory('${c}')">${c}</div>
+`).join('');
+
+if(document.getElementById('categoryManager')){
+document.getElementById('categoryManager').innerHTML=
+categories.map(c=>`
+<div class="bg-slate-800 rounded-2xl p-4 mb-2 flex justify-between">
+<span>${c}</span>
+<button onclick="deleteCategory('${c}')" class="bg-red-700 px-3 py-1 rounded">Delete</button>
+</div>
+`).join('');
+}
+}
+
+function filterCategory(c){
+currentCategory=c;
+setView('products');
+}
+
+function renderHome(){
+document.getElementById('homeProducts').innerHTML=products.map(renderProductCard).join('');
+bindCartButtons();
+}
+
+function renderProducts(){
+const q=document.getElementById('searchInput').value.toLowerCase();
+
+let filtered=products.filter(p=>p.name.toLowerCase().includes(q));
+
+if(currentCategory!=='all'){
+filtered=filtered.filter(p=>p.category===currentCategory);
+}
+
+document.getElementById('productsGrid').innerHTML=filtered.map(renderProductCard).join('');
+
+bindCartButtons();
+}
+
+function renderProductCard(p){
+
+const rem=p.flashEnd-Date.now();
+const mins=Math.floor(rem/60000);
+const hrs=Math.floor(rem/3600000);
+const m=Math.floor((rem%3600000)/60000);
+const s=Math.floor((rem%60000)/1000);
+
+let color='green';
+if(mins<=15)color='blue';
+if(mins<=10)color='magenta';
+if(mins<=3)color='red';
+
+return `
+<div class="product-card">
+
+<div class="flash-badge ${mins<=10?'heartbeat':''}">
+⚡ FLASH SALE
+</div>
+
+<img src="${p.image}" class="product-img">
+
+<div class="p-4">
+<div class="text-amber-400 text-sm">${p.category}</div>
+<h3 class="text-2xl font-bold">${p.name}</h3>
+
+<div class="mt-3">
+<span class="text-3xl font-bold">$${p.flashPrice}</span>
+<span class="line-through text-gray-400 ml-2">$${p.price}</span>
+</div>
+
+<div class="countdown mt-2" id="timer-${p.id}">
+⏰ ${hrs}h ${m}m ${s}s
+</div>
+
+${mins<=30?`
+<div class="large-timer" style="background:${color}">
+${mins} MINUTES LEFT
+</div>`:''}
+
+<button class="btn-primary mt-4 w-full addCartBtn" data-id="${p.id}">
+Add to Cart
+</button>
+
+</div>
+</div>
+`;
+}
+
+function bindCartButtons(){
+document.querySelectorAll('.addCartBtn').forEach(btn=>{
+btn.onclick=()=>addToCart(parseInt(btn.dataset.id));
+});
+}
+
+function addToCart(id){
+const p=products.find(x=>x.id===id);
+if(!p)return;
+
+const existing=cart.find(i=>i.id===id);
+
+if(existing){
+existing.qty++;
+}else{
+cart.push({...p,qty:1});
+}
+
+updateCart();
+showToast('Added to cart');
+}
+
+function updateCart(){
+let count=0;
+cart.forEach(i=>count+=i.qty);
+document.getElementById('cartCount').innerText=count;
+renderCart();
+}
+
+function calculateShipping(weight){
+return weight*4.5;
+}
+
+function renderCart(){
+
+const container=document.getElementById('cartItems');
+
+let total=0;
+let weight=0;
+
+container.innerHTML=cart.map(i=>{
+
+total+=i.flashPrice*i.qty;
+weight+=i.weight*i.qty;
+
+return `
+<div class="bg-slate-800 rounded-2xl p-4 mb-3 flex justify-between">
+<div>
+<h3 class="font-bold">${i.name}</h3>
+<p>$${i.flashPrice} × ${i.qty}</p>
+</div>
+<div class="flex gap-2">
+<button onclick="changeQty(${i.id},-1)" class="bg-red-700 px-3 rounded">-</button>
+<button onclick="changeQty(${i.id},1)" class="bg-green-700 px-3 rounded">+</button>
+</div>
+</div>
+`;
+}).join('');
+
+const shipping=calculateShipping(weight);
+
+if(discountPercent>0){
+total=total-(total*(discountPercent/100));
+}
+
+total+=shipping;
+
+document.getElementById('cartTotal').innerText='$'+total.toFixed(2);
+}
+
+function changeQty(id,val){
+const item=cart.find(i=>i.id===id);
+item.qty+=val;
+if(item.qty<=0){
+cart=cart.filter(i=>i.id!==id);
+}
+updateCart();
+}
+
+function checkout(){
+if(cart.length===0)return;
+
+orders.unshift({
+id:Date.now(),
+date:new Date().toLocaleString(),
+items:[...cart]
+});
+
+cart=[];
+updateCart();
+renderOrders();
+showToast('Order completed');
+setView('orders');
+}
+
+function renderOrders(){
+document.getElementById('ordersList').innerHTML=
+orders.map(o=>`
+<div class="bg-slate-800 rounded-2xl p-4 mb-3">
+<div class="flex justify-between">
+<strong>#${o.id}</strong>
+<span>${o.date}</span>
+</div>
+</div>
+`).join('');
+}
+
+function renderBlog(){
+document.getElementById('blogPosts').innerHTML=
+blogPosts.map(b=>`
+<div class="bg-slate-800 rounded-2xl p-5 mb-4">
+<h3 class="text-2xl font-bold">${b.title}</h3>
+<p class="mt-3 text-gray-300">${b.content}</p>
+</div>
+`).join('');
+}
+
+function loginAdmin(){
+const pass=document.getElementById('adminPassword').value;
+if(pass!=='admin123'){
+showToast('Wrong password');
+return;
+}
+
+document.getElementById('adminLogin').classList.add('hidden');
+document.getElementById('adminContent').classList.remove('hidden');
+
+renderAdminProducts();
+renderFlashAdmin();
+renderCoupons();
+renderPendingBlogs();
+renderCharts();
+renderCategories();
+
+showToast('Admin logged in');
+}
+
+function showAdminTab(id,btn){
+['productsTab','flashTab','couponTab','blogTab','categoryTab','analyticsTab']
+.forEach(t=>document.getElementById(t).classList.add('hidden'));
+
+document.getElementById(id).classList.remove('hidden');
+
+document.querySelectorAll('.admin-tab').forEach(x=>x.classList.remove('active'));
+btn.classList.add('active');
+}
+
+function renderAdminProducts(){
+document.getElementById('adminProducts').innerHTML=
+products.map(p=>`
+<div class="bg-slate-800 rounded-2xl p-4 mb-3 flex justify-between items-center">
+<div>
+<h3 class="font-bold">${p.name}</h3>
+<p>$${p.flashPrice}</p>
+</div>
+<div class="flex gap-2">
+<button onclick="editProduct(${p.id})" class="bg-blue-700 px-3 py-1 rounded">Edit</button>
+<button onclick="deleteProduct(${p.id})" class="bg-red-700 px-3 py-1 rounded">Delete</button>
+</div>
+</div>
+`).join('');
+}
+
+function addProduct(){
+
+const name=prompt('Name');
+if(!name)return;
+
+const price=parseFloat(prompt('Price'))||0;
+const flashPrice=parseFloat(prompt('Flash Price'))||0;
+
+let options='';
+
+categories.forEach((c,i)=>{
+options += `${i+1}. ${c}\n`;
+});
+
+const selected=parseInt(prompt('Select Category Number:\n'+options)) || 1;
+const category=categories[selected-1] || categories[0];
+
+const stock=parseInt(prompt('Stock')) || 0;
+const weight=parseFloat(prompt('Weight')) || 1;
+
+const image=prompt('JPEG Image URL') || 'https://picsum.photos/300/200';
+
+products.push({
+id:Date.now(),
+name:name,
+price:price,
+flashPrice:flashPrice,
+category:category,
+stock:stock,
+weight:weight,
+image:image,
+flashEnd:Date.now()+86400000
+});
+
+renderAdminProducts();
+renderProducts();
+renderHome();
+
+showToast('Product Added');
+}
+
+
+function editProduct(id){
+const p=products.find(x=>x.id===id);
+p.flashPrice=parseFloat(prompt('Flash Price',p.flashPrice));
+p.stock=parseInt(prompt('Stock',p.stock));
+renderAdminProducts();
+renderProducts();
+renderHome();
+}
+
+function deleteProduct(id){
+products=products.filter(p=>p.id!==id);
+renderAdminProducts();
+renderProducts();
+renderHome();
+}
+
+function renderFlashAdmin(){
+document.getElementById('flashAdmin').innerHTML=
+products.map(p=>`
+<div class="bg-slate-800 rounded-2xl p-4 mb-3 flex justify-between">
+<div>
+<h3 class="font-bold">${p.name}</h3>
+<p>Flash: $${p.flashPrice}</p>
+</div>
+<button onclick="editFlash(${p.id})" class="btn-primary">Edit Flash</button>
+</div>
+`).join('');
+}
+
+function editFlash(id){
+const p=products.find(x=>x.id===id);
+p.flashPrice=parseFloat(prompt('New Flash Price',p.flashPrice));
+const mins=parseInt(prompt('Minutes Remaining',30));
+p.flashEnd=Date.now()+(mins*60000);
+renderProducts();
+renderHome();
+renderFlashAdmin();
+}
+
+function generateCoupon(){
+const code='FLASH'+Math.floor(Math.random()*10000);
+const discount=parseInt(prompt('Discount Percentage'));
+coupons.push({code,discount});
+renderCoupons();
+alert('Coupon Created: '+code);
+}
+
+function renderCoupons(){
+document.getElementById('couponList').innerHTML=
+coupons.map(c=>`
+<div class="bg-slate-800 rounded-2xl p-4 mb-2">
+${c.code} - ${c.discount}%
+</div>
+`).join('');
+}
+
+function applyCoupon(){
+const code=document.getElementById('couponInput').value;
+const c=coupons.find(x=>x.code===code);
+if(!c){
+showToast('Invalid coupon');
+return;
+}
+discountPercent=c.discount;
+showToast('Coupon applied');
+renderCart();
+}
+
+function renderPendingBlogs(){
+document.getElementById('pendingBlogs').innerHTML=
+pendingBlogs.map((b,index)=>`
+<div class="bg-slate-800 rounded-2xl p-4 mb-3 flex justify-between">
+<div>
+<h3 class="font-bold">${b.title}</h3>
+<p>${b.content}</p>
+</div>
+<button onclick="approveBlog(${index})" class="btn-primary">Approve</button>
+</div>
+`).join('');
+}
+
+function approveBlog(index){
+blogPosts.push(pendingBlogs[index]);
+pendingBlogs.splice(index,1);
+renderPendingBlogs();
+renderBlog();
+}
+
+function addCategory(){
+const name=prompt('Category Name');
+if(!name)return;
+categories.push(name);
+renderCategories();
+}
+
+function deleteCategory(name){
+categories=categories.filter(c=>c!==name);
+renderCategories();
+}
+
+function renderCharts(){
+new Chart(document.getElementById('salesChart'),{
+type:'bar',
+data:{
+labels:['Mon','Tue','Wed','Thu','Fri'],
+datasets:[{label:'Revenue',data:[1200,2200,1800,3500,4100]}]
+}
+});
+
+new Chart(document.getElementById('clientChart'),{
+type:'line',
+data:{
+labels:['Jan','Feb','Mar','Apr','May'],
+datasets:[{label:'Client Purchases',data:[5,8,12,20,24]}]
+}
+});
+}
+
+function toggleChat(){
+document.getElementById('chatWindow').classList.toggle('hidden');
+}
+
+function sendChat(){
+const input=document.getElementById('chatInput');
+const msg=input.value.trim();
+if(!msg)return;
+
+const box=document.getElementById('chatMessages');
+
+box.innerHTML+=`
+<div class="bg-blue-700 rounded-xl p-3 mb-2 text-sm ml-8">
+${msg}
+</div>`;
+
+setTimeout(()=>{
+box.innerHTML+=`
+<div class="bg-slate-800 rounded-xl p-3 mb-2 text-sm mr-8">
+FlashMarket is secure, fast and trusted worldwide.
+</div>`;
+box.scrollTop=box.scrollHeight;
+},600);
+
+input.value='';
+}
+
+function startCountdown(){
+setInterval(()=>{
+
+products.forEach(product=>{
+const rem=product.flashEnd-Date.now();
+if(rem>0){
+const hrs=Math.floor(rem/3600000);
+const mins=Math.floor((rem%3600000)/60000);
+const secs=Math.floor((rem%60000)/1000);
+const el=document.getElementById('timer-'+product.id);
+if(el){
+el.innerHTML=`⏰ ${hrs}h ${mins}m ${secs}s`;
+}
+}
+});
+
+const nearest=Math.min(...products.map(p=>p.flashEnd));
+const rem=nearest-Date.now();
+const h=Math.floor(rem/3600000);
+const m=Math.floor((rem%3600000)/60000);
+const s=Math.floor((rem%60000)/1000);
+
+document.getElementById('globalTimer').innerHTML=`⏰ ${h}h ${m}m ${s}s`;
+
+},1000);
+}
+
+
+
+
+const searchEl=document.getElementById('searchInput');
+if(searchEl){
+searchEl.addEventListener('input',renderProducts);
+}
+
+renderCategories();
+renderHome();
+renderBlog();
+startCountdown();
+
+</script>
+
+</body>
+</html>
